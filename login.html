@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Rengoku.tv</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="icon.ico" />
+    <link rel="stylesheet" href="css/auth.css" />
+  </head>
+  <header>
+    <div class="nav container">
+      <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
+    </div>
+  </header>
+  <body>
+    <div class="login-container">
+      <div class="login-header">
+        <h2>🎬 Welcome Back</h2>
+        <p>Login to your account</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div class="forgot-password">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-login w-100 btn-lg text-white">
+          Login
+        </button>
+      </form>
+
+      <div class="signup-link">
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          // Static admin credentials
+          const adminUsername = "admin@gmail.com";
+          const adminPassword = "adminadmin";
+
+          // Check if credentials match
+          if (email === adminUsername && password === adminPassword) {
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("isAdmin", true);
+            window.location.href = "dahsboard.html";
+          } else {
+            alert("Invalid username or password!");
+            document.getElementById("loginForm").reset();
+          }
+        });
+
+      document.addEventListener("click", function (event) {
+        const userMenu = document.querySelector(".user-menu");
+        const userToggle = document.querySelector("#user-toggle");
+
+        if (userMenu && !userMenu.contains(event.target)) {
+          userToggle.checked = false;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rengoku.tv</title>
+
+<!-- Fav Icon -->
+<link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/swiper-bundle.min.css">
+
+<!-- Box Icons -->
+<link href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+    <div class="nav container">
+        <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
+         <ul class="nav-menu">
+          
+          
+
+          <!-- User Menu -->
+          <!-- User Menu -->
+          <li class="user-menu">
+            <!-- hidden checkbox for toggle -->
+            <input type="checkbox" id="user-toggle" title="User menu toggle" />
+
+            <!-- label acts as button -->
+            <label for="user-toggle" class="user-icon">
+              <i class="bx bx-user-circle"></i>
+              <i class="bx bxs-chevron-down"></i>
+            </label>
+
+            <ul class="dropdown-menu">
+              <li><a href="login.html" class="login-btn">Login</a></li>
+              <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
+            </ul>
+          </li>
+        </ul>
+       
+    </div>
+</header>
+<!-- video -->
+ <div class="video-container container">
+    <video src="img/trailer.mp4" controls autoplay ></video>
+ </div>
+ <!-- story -->
+  <div class="about container">
+    <h2>Story of the movie</h2>
+    <p>The Infinity Castle arc in Demon Slayer is the final, 
+        epic battle where the Demon Slayer Corps, led by Tanjiro and the Hashira, 
+        are trapped in Muzan Kibutsuji's shifting stronghold to defeat him and end demonkind, featuring intense, 
+        personal fights against Upper Rank demons like Doma, Akaza, and Kokushibo, complex backstories (especially for Akaza/Hakuji), 
+        and high stakes as slayers confront their pasts and fight for humanity's survival in a non-stop, maze-like dimension. </p>
+  </div>
+ <!-- download -->
+  <div class="download ">
+    <h2>Reservation</h2>
+    <div  class="reservation">
+    <a href="reservation.html">Take your ticket now !</a>
+  </div>
+        <!-- Swiper Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<!-- Scripts -->
+<script src="js/swiper-bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+      document.addEventListener("click", function (event) {
+        const userMenu = document.querySelector(".user-menu");
+        const userToggle = document.querySelector("#user-toggle");
+
+        if (!userMenu.contains(event.target)) {
+          userToggle.checked = false;
+        }
+      });
+    </script>
+
+</body>
+</html>
