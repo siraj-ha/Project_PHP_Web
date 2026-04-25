@@ -1,3 +1,59 @@
+<?php
+require_once __DIR__ . '/backend/db.php';
+
+$success_message = '';
+$error_message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $full_name = trim($_POST['full_name'] ?? '');
+  $email = trim($_POST['email'] ?? '');
+  $phone = trim($_POST['phone'] ?? '');
+  $password = $_POST['password'] ?? '';
+  $confirm_password = $_POST['confirm_password'] ?? '';
+
+  if ($full_name === '' || $email === '' || $password === '' || $confirm_password === '') {
+    $error_message = 'Please fill in all required fields.';
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $error_message = 'Please enter a valid email address.';
+  } elseif ($password !== $confirm_password) {
+    $error_message = 'Passwords do not match.';
+  } else {
+    $check_stmt = $conn->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
+
+    if (!$check_stmt) {
+      $error_message = 'Something went wrong. Please try again.';
+    } else {
+      $check_stmt->bind_param('s', $email);
+      $check_stmt->execute();
+      $check_result = $check_stmt->get_result();
+
+      if ($check_result->num_rows > 0) {
+        $error_message = 'This email is already registered.';
+      } else {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $insert_stmt = $conn->prepare('INSERT INTO users (full_name, email, phone, password) VALUES (?, ?, ?, ?)');
+
+        if (!$insert_stmt) {
+          $error_message = 'Could not create account. Please try again.';
+        } else {
+          $insert_stmt->bind_param('ssss', $full_name, $email, $phone, $hashed_password);
+
+          if ($insert_stmt->execute()) {
+            $success_message = 'Account created successfully. You can now log in.';
+          } else {
+            $error_message = 'Could not create account. Please try again.';
+          }
+
+          $insert_stmt->close();
+        }
+      }
+
+      $check_stmt->close();
+    }
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,13 +91,27 @@
         <p>Join us for the best cinema experience</p>
       </div>
 
-      <form>
+      <?php if ($success_message !== ''): ?>
+      <div class="alert alert-success" role="alert">
+        <?php echo htmlspecialchars($success_message, ENT_QUOTES, 'UTF-8'); ?>
+      </div>
+      <?php endif; ?>
+
+      <?php if ($error_message !== ''): ?>
+      <div class="alert alert-danger" role="alert">
+        <?php echo htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8'); ?>
+      </div>
+      <?php endif; ?>
+
+      <form method="POST" action="signup.php">
         <div class="mb-3">
           <label for="fullName" class="form-label">Full Name</label>
           <input
             type="text"
             class="form-control"
             id="fullName"
+            name="full_name"
+            value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name'], ENT_QUOTES, 'UTF-8') : ''; ?>"
             placeholder="Enter your full name"
             required
           />
@@ -53,6 +123,8 @@
             type="email"
             class="form-control"
             id="email"
+            name="email"
+            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8') : ''; ?>"
             placeholder="Enter your email"
             required
           />
@@ -64,6 +136,8 @@
             type="tel"
             class="form-control"
             id="phone"
+            name="phone"
+            value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8') : ''; ?>"
             placeholder="Enter your phone number"
           />
         </div>
@@ -74,6 +148,7 @@
             type="password"
             class="form-control"
             id="password"
+            name="password"
             placeholder="Create a password"
             required
           />
@@ -87,6 +162,7 @@
             type="password"
             class="form-control"
             id="confirmPassword"
+            name="confirm_password"
             placeholder="Confirm your password"
             required
           />
@@ -106,7 +182,7 @@
       </form>
 
       <div class="login-link">
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <p>Already have an account? <a href="login.php">Login here</a></p>
       </div>
     </div>
 
@@ -116,7 +192,7 @@
         const userMenu = document.querySelector(".user-menu");
         const userToggle = document.querySelector("#user-toggle");
 
-        if (!userMenu.contains(event.target)) {
+        if (userMenu && !userMenu.contains(event.target)) {
           userToggle.checked = false;
         }
       });

@@ -1,0 +1,259 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  --main-color: #fa5353;
+  --black-color: #1b182b;
+  --light-color: #322f40;
+  --text-color: hsl(0, 0%, 91%);
+  --card-bg: #f7f8fc;
+  --card-muted: #e8edf6;
+  --card-ink: #1d2a40;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(250, 83, 83, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(circle at 85% 85%, rgba(250, 83, 83, 0.1), transparent 28%),
+    var(--black-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  color: var(--text-color);
+}
+
+.profile-wrapper {
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: rgba(247, 248, 252, 0.98);
+  border-radius: 2rem;
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-header {
+  background: linear-gradient(120deg, #1b182b 0%, #322f40 40%, #fa5353 100%);
+  padding: 2rem 1.5rem 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.profile-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -16px;
+  width: 100%;
+  height: 32px;
+  background: var(--card-bg);
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+
+.avatar-large {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 0.9rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.profile-header h2 {
+  color: var(--text-color);
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.profile-badge {
+  display: inline-block;
+  margin-top: 0.55rem;
+  padding: 0.28rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.profile-body {
+  padding: 2rem;
+  color: var(--card-ink);
+}
+
+.alert {
+  padding: 1rem 1.15rem;
+  border-radius: 1rem;
+  margin-bottom: 1.3rem;
+  font-weight: 500;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.alert-success {
+  background: #dbf7e4;
+  color: #1c6131;
+  border-left: 4px solid #2f9f51;
+}
+
+.alert-error {
+  background: #ffe4e4;
+  color: #8f2920;
+  border-left: 4px solid #d4473e;
+}
+
+.alert-icon {
+  font-weight: 700;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.info-row {
+  background: var(--card-bg);
+  border: 1px solid #dce3ef;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.info-label {
+  background: var(--card-muted);
+  color: #2b3f63;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 0.78rem 1rem;
+}
+
+.info-value {
+  padding: 0.9rem 1rem;
+  background: #ffffff;
+  color: #1f2a3f;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.empty-field {
+  color: #6f7d91;
+  font-style: italic;
+}
+
+.bio-text {
+  white-space: pre-wrap;
+}
+
+.mono-id {
+  font-family: "Consolas", "Courier New", monospace;
+}
+
+.text-muted {
+  color: #748196;
+  margin-top: 4px;
+  font-size: 0.76rem;
+}
+
+.action-buttons {
+  border-top: 1px solid #e1e8f1;
+  padding-top: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.68rem 1.35rem;
+  transition: 0.2s ease;
+}
+
+.btn-secondary {
+  color: var(--text-color);
+  background: var(--light-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background: var(--main-color);
+}
+
+.edit-icon {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #33517a;
+  background: #edf2fb;
+  border: 1px solid #d2deef;
+  border-radius: 999px;
+  padding: 0.48rem 0.95rem;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #e1e8f1;
+  margin: 1rem 0 0.7rem;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #7e8ca0;
+}
+
+@media (max-width: 640px) {
+  .profile-body {
+    padding: 1.25rem;
+  }
+
+  .profile-header {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .avatar-large {
+    width: 86px;
+    height: 86px;
+    font-size: 2.2rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .edit-icon {
+    width: 100%;
+    text-align: center;
+  }
+}

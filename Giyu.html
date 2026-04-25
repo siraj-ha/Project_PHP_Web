@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -44,8 +44,8 @@
             </label>
 
             <ul class="dropdown-menu">
-              <li><a href="login.html" class="login-btn">Login</a></li>
-              <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
+              <li><a href="login.php" class="login-btn">Login</a></li>
+              <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
             </ul>
           </li>
         </ul>
@@ -273,11 +273,53 @@
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/main.js"></script>
     <script>
+      function escapeHtml(text) {
+        const map = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;",
+        };
+
+        return String(text).replace(/[&<>"']/g, function (char) {
+          return map[char];
+        });
+      }
+
+      const dropdownMenu = document.querySelector(".dropdown-menu");
+
+      if (dropdownMenu) {
+        fetch("backend/auth_status.php", { cache: "no-store" })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.logged_in) {
+              const displayName = data.name || data.email || "Profile";
+
+              dropdownMenu.innerHTML = `
+                <li><a href="profile.php" class="login-btn">${escapeHtml(displayName)}</a></li>
+                <li><a href="logout.php" class="signup-btn">Logout</a></li>
+              `;
+            } else {
+              dropdownMenu.innerHTML = `
+                <li><a href="login.php" class="login-btn">Login</a></li>
+                <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
+              `;
+            }
+          })
+          .catch(() => {
+            dropdownMenu.innerHTML = `
+              <li><a href="login.php" class="login-btn">Login</a></li>
+              <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
+            `;
+          });
+      }
+
       document.addEventListener("click", function (event) {
         const userMenu = document.querySelector(".user-menu");
         const userToggle = document.querySelector("#user-toggle");
 
-        if (!userMenu.contains(event.target)) {
+        if (userMenu && !userMenu.contains(event.target)) {
           userToggle.checked = false;
         }
       });
