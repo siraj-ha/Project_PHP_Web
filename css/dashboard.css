@@ -23,7 +23,6 @@ body {
   min-height: 100vh;
 }
 
-/* SIDEBAR */
 .sidebar {
   width: 250px;
   background: var(--dark-bg);
@@ -72,7 +71,6 @@ body {
   padding-left: 25px;
 }
 
-/* MAIN CONTENT */
 .main {
   flex: 1;
   margin-left: 250px;
@@ -80,7 +78,6 @@ body {
   background: var(--black-color);
 }
 
-/* TOP BAR */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -111,7 +108,6 @@ body {
   color: var(--text-white);
 }
 
-/* STATS CARDS */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -153,7 +149,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* CHARTS */
 .charts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -177,7 +172,6 @@ body {
   grid-column: 1 / -1;
 }
 
-/* TABLE */
 .table-container {
   background: var(--dark-bg);
   padding: 25px;
@@ -212,7 +206,6 @@ table tbody tr:hover {
   background: var(--light-color);
 }
 
-/* BUTTONS */
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -241,7 +234,6 @@ table tbody tr:hover {
   color: var(--text-white);
 }
 
-/* RESPONSIVE */
 @media (max-width: 1200px) {
   .stats {
     grid-template-columns: repeat(2, 1fr);
@@ -286,7 +278,7 @@ table tbody tr:hover {
     grid-template-columns: 1fr;
   }
 }
-/* Reservations Section */
+
 .reservations {
   margin-top: 2rem;
 }
@@ -322,7 +314,6 @@ table tbody tr:hover {
   border-bottom: none;
 }
 
-/* Status styles */
 .status {
   font-weight: bold;
 }
@@ -334,7 +325,7 @@ table tbody tr:hover {
 .status.soon {
   color: #f97316;
 }
-/* Coming Soon Section */
+
 .coming-soon {
   margin-top: 2rem;
   background: var(--dark-bg);
@@ -359,7 +350,6 @@ table tbody tr:hover {
   color: var(--text-color);
 }
 
-/* Users Section */
 #usersSection {
   margin-top: 2rem;
   background: var(--dark-bg);
@@ -378,7 +368,6 @@ table tbody tr:hover {
   color: var(--text-color);
 }
 
-/* Sidebar Scrollbar (optional for better UX) */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -395,7 +384,7 @@ table tbody tr:hover {
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: #ff4d4d;
 }
-/* Add & Delete Buttons */
+
 .add-btn {
   margin-bottom: 15px;
   padding: 10px 20px;

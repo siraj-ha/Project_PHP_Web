@@ -12,7 +12,7 @@ $user_id = (int) $_SESSION['user_id'];
 $message = '';
 $error = '';
 
-// Ensure bio column exists
+
 $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS bio TEXT NULL");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $new_email = trim($_POST['email'] ?? '');
     $new_phone = trim($_POST['phone'] ?? '');
     
-    // Sanitize phone number - allow empty
+    
     $new_phone = $new_phone === '' ? null : $new_phone;
 
     if ($new_full_name === '') {
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     }
 }
 
-// Fetch updated user data
+
 $query = 'SELECT id, full_name, email, phone, bio, created_at FROM users WHERE id = ? LIMIT 1';
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $user_id);
@@ -200,7 +200,7 @@ $conn->close();
                 </details>
 
                 <div class="action-buttons">
-                    <a href="Giyu.html" class="btn btn-secondary">← Back to Home</a>
+                    <a href="Giyu.html" class="btn btn-secondary"> Home</a>
                 </div>
 
                 <hr />

@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-/* GLOBAL STYLES */
+
 * {
   font-family: "Poppins", sans-serif;
   margin: 0;
@@ -82,7 +82,7 @@ header {
   color: var(--main-color);
 }
 
-/* USER MENU */
+
 .user-menu {
   position: relative;
 }
@@ -136,7 +136,7 @@ header {
   color: white;
 }
 
-/* MOBILE MENU TOGGLE */
+
 #menu-toggle {
   display: none;
 }
@@ -181,7 +181,7 @@ header {
   }
 }
 
-/* HOME SECTION */
+
 .home {
   position: relative;
   min-height: 540px;
@@ -224,7 +224,7 @@ header {
   clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 6% 100%, 0% 50%);
 }
 
-/* HEADINGS & BOXES */
+
 .heading {
   margin: 3rem 0 2rem;
   display: flex;
@@ -298,7 +298,7 @@ header {
   font-size: 0.9rem;
 }
 
-/* VIDEO */
+
 .video-container {
   margin-top: 5rem;
 }
@@ -376,7 +376,7 @@ header {
   box-shadow: 0 10px 30px rgba(250, 83, 83, 0.2);
 }
 
-/* CONTACT */
+
 .contact-header {
   text-align: center;
   margin-bottom: 50px;
@@ -447,7 +447,7 @@ header {
   color: white;
 }
 
-/* FORMS */
+
 .contact-form,
 form {
   display: flex;
@@ -525,7 +525,7 @@ form input[type="submit"]:hover {
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 992px) {
   .card-container {
     grid-template-columns: 100%;
