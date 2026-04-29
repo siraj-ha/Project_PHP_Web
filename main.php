@@ -34,7 +34,7 @@ if ($coming_soon_result) {
     <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
 
     
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.v2.css" />
     <link rel="stylesheet" href="css/swiper-bundle.min.css" />
 
    
@@ -47,7 +47,7 @@ if ($coming_soon_result) {
   <body>
     <header>
       <div class="nav container">
-        <a href="Giyu.php" class="logo">Rengoku<span>.tv</span></a>
+        <a href="main.php" class="logo">Rengoku<span>.tv</span></a>
      
         <ul class="nav-menu">
           <li><a href="#home" class="nav-link active">Home</a></li>
@@ -75,7 +75,6 @@ if ($coming_soon_result) {
       </div>
     </header>
 
-   
     <section class="home container" id="home">
       <?php if ($random_movie): ?>
         <img src="<?php echo htmlspecialchars($random_movie['image_url']); ?>" alt="<?php echo htmlspecialchars($random_movie['title']); ?>" />
@@ -84,7 +83,7 @@ if ($coming_soon_result) {
           <a href="movie-details.php?id=<?php echo $random_movie['id']; ?>" class="btn">View Details</a>
         </div>
       <?php else: ?>
-        <img src="img/aa.PNG" alt="No movies available" />
+        <img src="img/logo.PNG"  />
         <div class="home-text">
           <h1>Rengoku.tv <br />Movies Coming Soon</h1>
           <a href="#movies" class="btn">Browse Movies</a>
@@ -92,87 +91,76 @@ if ($coming_soon_result) {
       <?php endif; ?>
     </section>
 
-    
+  
     <section class="trending movies container" id="movies">
-      <div>
-        <div class="heading">
-          <i class="bx bxs-flame"></i>
-          <h2>Movies</h2>
-        </div>
+      <div class="heading">
+        <i class="bx bxs-flame"></i>
+        <h2>Movies</h2>
+      </div>
 
-        <?php if (count($available_movies) > 0): ?>
-        <div class="trending-content swiper">
-          <div class="swiper-wrapper">
-            <?php foreach ($available_movies as $movie): ?>
-            
-            <div class="swiper-slide">
-              <a href="movie-details.php?id=<?php echo (int) $movie['id']; ?>" class="movie-link">
-                <div class="box">
-                  <img src="<?php echo htmlspecialchars($movie['image_url']); ?>" alt="<?php echo htmlspecialchars($movie['title']); ?>" />
-                  <div class="box-text">
-                    <h2><?php echo htmlspecialchars($movie['title']); ?></h2>
-                    <h3><?php echo htmlspecialchars($movie['genre'] ?? 'Unknown'); ?></h3>
-                    <div class="rating-download">
-                      <div class="rating">
-                        <i class="bx bxs-star"></i>
-                        <span><?php echo htmlspecialchars($movie['rating'] ?? '0'); ?></span>
-                      </div>
-                      <span class="box-btn"><i class="bx bx-arrow-to-right"></i></span>
+      <?php if (count($available_movies) > 0): ?>
+      <div class="trending-content swiper">
+        <div class="swiper-wrapper">
+          <?php foreach ($available_movies as $movie): ?>
+          <div class="swiper-slide">
+            <a href="movie-details.php?id=<?php echo (int) $movie['id']; ?>" class="movie-link">
+              <div class="box">
+                <img src="<?php echo htmlspecialchars($movie['image_url']); ?>" alt="<?php echo htmlspecialchars($movie['title']); ?>" />
+                <div class="box-text">
+                  <h2><?php echo htmlspecialchars($movie['title']); ?></h2>
+                  <h3><?php echo htmlspecialchars($movie['genre'] ?? 'Unknown'); ?></h3>
+                  <div class="rating-download">
+                    <div class="rating">
+                      <i class="bx bxs-star"></i>
+                      <span><?php echo htmlspecialchars($movie['rating'] ?? '0'); ?></span>
                     </div>
+                    <span class="box-btn"><i class="bx bx-arrow-to-right"></i></span>
                   </div>
                 </div>
-              </a>
-            </div>
-            <?php endforeach; ?>
+              </div>
+            </a>
           </div>
-
-          <div class="swiper-pagination"></div>
+          <?php endforeach; ?>
         </div>
-        <?php else: ?>
-        <div class="no-movies" style="text-align: center; padding: 40px; color: #999;">
-          <p style="font-size: 18px; margin: 0;">No movies available right now.</p>
-        </div>
-        <?php endif; ?>
+        <div class="swiper-pagination"></div>
       </div>
+      <?php else: ?>
+      <div class="no-movies">
+        <p>No movies available right now.</p>
+      </div>
+      <?php endif; ?>
     </section>
-
     <section class="trending movies container" id="trending">
-      <div>
-        <div class="heading">
-          <i class="bx bxs-flame"></i>
-          <h2>Coming Soon</h2>
-        </div>
-
-        <?php if (count($coming_soon_movies) > 0): ?>
-        <div class="trending-content swiper">
-          <div class="swiper-wrapper">
-            <?php foreach ($coming_soon_movies as $movie): ?>
-            <!-- Movie Slide -->
-            <div class="swiper-slide">
-              <a href="movie-details.php?id=<?php echo (int) $movie['id']; ?>" class="movie-link">
-                <div class="box">
-                  <img src="<?php echo htmlspecialchars($movie['image_url']); ?>" alt="<?php echo htmlspecialchars($movie['title']); ?>" />
-                  <div class="box-text">
-                    <h2><?php echo htmlspecialchars($movie['title']); ?></h2>
-                    <h3><?php echo htmlspecialchars($movie['genre'] ?? 'Unknown'); ?></h3>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <?php endforeach; ?>
-          </div>
-
-       
-          <div class="swiper-pagination"></div>
-        </div>
-        <?php else: ?>
-        <div class="no-movies" style="text-align: center; padding: 40px; color: #999;">
-          <p style="font-size: 18px; margin: 0;">No movies coming soon at the moment.</p>
-        </div>
-        <?php endif; ?>
+      <div class="heading">
+        <i class="bx bxs-flame"></i>
+        <h2>Coming Soon</h2>
       </div>
-    </section>
 
+      <?php if (count($coming_soon_movies) > 0): ?>
+      <div class="trending-content swiper">
+        <div class="swiper-wrapper">
+          <?php foreach ($coming_soon_movies as $movie): ?>
+          <div class="swiper-slide">
+            <a href="movie-details.php?id=<?php echo (int) $movie['id']; ?>" class="movie-link">
+              <div class="box">
+                <img src="<?php echo htmlspecialchars($movie['image_url']); ?>" alt="<?php echo htmlspecialchars($movie['title']); ?>" />
+                <div class="box-text">
+                  <h2><?php echo htmlspecialchars($movie['title']); ?></h2>
+                  <h3><?php echo htmlspecialchars($movie['genre'] ?? 'Unknown'); ?></h3>
+                </div>
+              </div>
+            </a>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <?php else: ?>
+      <div class="no-movies">
+        <p>No movies coming soon at the moment.</p>
+      </div>
+      <?php endif; ?>
+    </section>
 
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/main.js"></script>

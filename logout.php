@@ -3,5 +3,5 @@ session_start();
 session_unset();
 session_destroy();
 
-header('Location: Giyu.php');
+header('Location: main.php');
 exit;

@@ -202,7 +202,7 @@ $conn->close();
                 </details>
 
                 <div class="action-buttons">
-                    <a href="Giyu.php" class="btn btn-secondary"> Home</a>
+                    <a href="main.php" class="btn btn-secondary"> Home</a>
                 </div>
 
                 <hr />

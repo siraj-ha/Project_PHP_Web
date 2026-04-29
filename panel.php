@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if (!isset($_SESSION['is_admin']) || (int) $_SESSION['is_admin'] !== 1) {
-		header('Location: Giyu.php');
+		header('Location: main.php');
 		exit;
 }
 
@@ -385,23 +385,23 @@ function h(string $value): string
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Rengoku.tv - Control Panel</title>
-		<link rel="stylesheet" href="css/dashboard.css" />
 		<link rel="stylesheet" href="css/panel.css" />
 	</head>
-	<body>
-		<aside class="sidebar">
-			<a href="Giyu.php">
-				<h2 class="logo">Rengoku<span>.tv</span></h2>
-			</a>
-			<nav>
-				<a href="#dashboardSection" class="active">Dashboard</a>
-        <a href="dashboard.php">Stats</a>
-				<a href="#moviesSection">Movies</a>
-				<a href="#usersSection">Users</a>
-			</nav>
-		</aside>
+	<body class="panel-page">
+		<div class="panel-layout">
+			<aside class="panel-sidebar">
+				<a href="main.php">
+					<h2 class="logo">Rengoku<span>.tv</span></h2>
+				</a>
+				<nav>
+					<a href="#dashboardSection" class="active">Dashboard</a>
+        			<a href="dashboard.php">Stats</a>
+					<a href="#moviesSection">Movies</a>
+					<a href="#usersSection">Users</a>
+				</nav>
+			</aside>
 
-		<main class="main admin-wrapper">
+			<main class="panel-main admin-wrapper">
 			<header class="topbar" id="dashboardSection">
 				<h1>Control Panel</h1>
 				<div class="admin"><?php echo h($_SESSION['user_name'] ?? 'Admin'); ?></div>
@@ -640,7 +640,8 @@ function h(string $value): string
 				</div>
 				<?php endif; ?>
 			</section>
-		</main>
+			</main>
+		</div>
 		<script>
 			(function () {
 				const flash = document.querySelector('.flash');

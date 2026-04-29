@@ -182,12 +182,12 @@ $embedUrl = $trailerVideoId !== '' ? 'https://www.youtube-nocookie.com/embed/' .
 	<body>
 		<header>
 			<div class="nav container">
-				<a href="Giyu.php" class="logo">Rengoku<span>.tv</span></a>
+				<a href="main.php" class="logo">Rengoku<span>.tv</span></a>
 			</div>
 		</header>
 
 		<main class="details-page container">
-			<a class="back-link" href="Giyu.php">Back to home</a>
+			<a class="back-link" href="main.php">Back to home</a>
 
 			<?php if (!$movie): ?>
 			<div class="error-box">

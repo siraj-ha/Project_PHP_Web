@@ -1,4 +1,4 @@
 <?php
-header('Location: Giyu.php');
+header('Location: main.php');
 exit;
 ?>

@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           if ((int) $user['is_admin'] === 1) {
             header('Location: panel.php');
           } else {
-            header('Location: Giyu.php');
+            header('Location: main.php');
           }
           exit;
         }
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </head>
   <header>
     <div class="nav container">
-      <a href="Giyu.php" class="logo">Rengoku<span>.tv</span></a>
+      <a href="main.php" class="logo">Rengoku<span>.tv</span></a>
     </div>
   </header>
   <body>

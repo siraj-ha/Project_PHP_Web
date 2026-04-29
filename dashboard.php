@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if (!isset($_SESSION['is_admin']) || (int) $_SESSION['is_admin'] !== 1) {
-	header('Location: Giyu.php');
+	header('Location: main.php');
 	exit;
 }
 
@@ -120,7 +120,7 @@ $dashboardPayload = [
 	<body>
 		<div class="layout">
 			<aside class="sidebar">
-				<a class="brand" href="Giyu.php">
+				<a class="brand" href="main.php">
 					<h1>Rengoku.tv</h1>
 					
 				</a>
@@ -323,7 +323,7 @@ $dashboardPayload = [
 				<script>
 					window.dashboardData = <?php echo json_encode($dashboardPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
 				</script>
-				<script src="js/dahsboard.js"></script>
+				<script src="js/dashboard.js"></script>
 			</main>
 		</div>
 	</body>
