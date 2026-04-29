@@ -15,6 +15,54 @@
   --light-color: #322f40;
   --text-color: hsl(0, 0%, 91%);
 }
+
+.trending-content {
+  background-color: #ffffff !important;
+  padding: 20px !important;
+  border-radius: 10px;
+}
+
+.trending-content.swiper {
+  background-color: #ffffff !important;
+}
+
+.swiper-wrapper {
+  background-color: #ffffff !important;
+}
+
+.trending {
+  background-color: #ffffff !important;
+  padding: 20px !important;
+  border-radius: 10px;
+  margin: 20px 0 !important;
+}
+
+.trending .heading {
+  color: var(--black-color) !important;
+}
+
+.trending .heading h2 {
+  color: var(--black-color) !important;
+}
+
+.trending .heading .bx {
+  color: var(--text-color) !important;
+}
+
+.no-movies {
+  color: #666 !important;
+}
+
+.movie-link {
+  display: block;
+  color: inherit;
+}
+
+.movie-link:hover .box {
+  transform: translateY(-4px);
+  transition: transform 0.2s ease;
+}
+
 ::selection {
   color: var(--text-color);
   background-color: (--main-color);
@@ -136,7 +184,6 @@ header {
   background: var(--main-color);
 }
 
-/* HOME SECTION */
 .home {
   position: relative;
   min-height: 540px;
@@ -473,7 +520,7 @@ form input[type="submit"]:hover {
 }
 .reservation a {
   width: 300px;
-  height: 50  px;
+  height: 50 px;
   border-radius: 20px;
   text-align: center;
   background-color: var(--main-color);

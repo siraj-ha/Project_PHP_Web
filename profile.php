@@ -93,9 +93,11 @@ $conn->close();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>My Profile | Dashboard</title>
+    <title>My Profile </title>
     <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/profile.css" />
+    
+     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -200,7 +202,7 @@ $conn->close();
                 </details>
 
                 <div class="action-buttons">
-                    <a href="Giyu.html" class="btn btn-secondary"> Home</a>
+                    <a href="Giyu.php" class="btn btn-secondary"> Home</a>
                 </div>
 
                 <hr />

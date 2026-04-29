@@ -1,0 +1,118 @@
+<style>
+      body {
+        background: radial-gradient(circle at top, #2b2230 0, #1b182b 45%, #101018 100%);
+      }
+
+      .details-page {
+        padding: 110px 0 60px;
+      }
+
+      .details-shell {
+        background: rgba(20, 20, 28, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .poster {
+        width: 100%;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #0f0f14;
+        aspect-ratio: 3 / 4;
+      }
+
+      .poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .movie-meta h1 {
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        margin-bottom: 10px;
+        line-height: 1.05;
+      }
+
+      .meta-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 14px 0 18px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f5f5f5;
+        font-size: 0.92rem;
+      }
+
+      .description {
+        color: #d6d6d6;
+        line-height: 1.75;
+        font-size: 1rem;
+      }
+
+      .trailer-section {
+        margin-top: 28px;
+      }
+
+      .trailer-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 14px;
+      }
+
+      .video-frame {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      .video-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 18px;
+        color: #fff;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 10px 14px;
+        border-radius: 999px;
+      }
+
+      .error-box {
+        padding: 30px;
+        border-radius: 18px;
+        background: rgba(20, 20, 28, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      @media (max-width: 900px) {
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
