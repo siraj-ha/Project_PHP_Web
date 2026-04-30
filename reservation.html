@@ -1,63 +1,62 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservation - Rengoku.tv</title>
 
-    <!-- Fav Icon -->
-    <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservation - Rengoku.tv</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/swiper-bundle.min.css" />
+  <!-- Fav Icon -->
+  <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
 
-    <!-- Box Icons -->
-    <link
-      href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css"
-      rel="stylesheet"
-    />
-  </head>
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/swiper-bundle.min.css" />
 
-  <body>
-    <!-- Header -->
-    <header>
-      <div class="nav container">
-        <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
+  <!-- Box Icons -->
+  <link href="https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css" rel="stylesheet" />
+</head>
 
-        <!-- User Menu -->
-        <ul class="nav-menu">
-          <li class="user-menu">
-            <input type="checkbox" id="user-toggle" title="User menu toggle" />
-            <label for="user-toggle" class="user-icon">
-              <i class="bx bx-user-circle"></i>
-              <i class="bx bxs-chevron-down"></i>
-            </label>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="nav container">
+      <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
 
-            <ul class="dropdown-menu">
-              <li><a href="login.php" class="login-btn">Login</a></li>
-              <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
-            </ul>
-          </li>
-        </ul>
+      <!-- User Menu -->
+      <ul class="nav-menu">
+        <li class="user-menu">
+          <input type="checkbox" id="user-toggle" title="User menu toggle" />
+          <label for="user-toggle" class="user-icon">
+            <i class="bx bx-user-circle"></i>
+            <i class="bx bxs-chevron-down"></i>
+          </label>
+
+          <ul class="dropdown-menu">
+            <li><a href="login.php" class="login-btn">Login</a></li>
+            <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Reservation Section -->
+  <section class="banner">
+    <h2>TAKE YOUR TICKETS NOW!</h2>
+    <div class="card-container">
+      <div class="card-img">
       </div>
-    </header>
 
-    <!-- Reservation Section -->
-    <section class="banner">
-      <h2>TAKE YOUR TICKETS NOW!</h2>
-      <div class="card-container">
-        <div class="card-img">
-          <!-- image here -->
-        </div>
-
-        <div class="card-content">
-          <h3>Reservation</h3>
-          <form>
-            <div class="form-row">
-              <select name="days" title="Select Day">
-                <option value="day-select">Select Day</option>
+      <div class="card-content">
+        <h3>Book a Seat</h3>
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <i class='bx bx-calendar'></i>
+              <select name="days" title="Select Day" required>
+                <option value="" disabled selected hidden>Select Day</option>
                 <option value="sunday">Sunday</option>
                 <option value="monday">Monday</option>
                 <option value="tuesday">Tuesday</option>
@@ -66,9 +65,12 @@
                 <option value="friday">Friday</option>
                 <option value="saturday">Saturday</option>
               </select>
+            </div>
 
-              <select name="hours" title="Select Hour">
-                <option value="hour-select">Select Hour</option>
+            <div class="form-group">
+              <i class='bx bx-time-five'></i>
+              <select name="hours" title="Select Hour" required>
+                <option value="" disabled selected hidden>Select Hour</option>
                 <option value="10">10:00</option>
                 <option value="14">14:00</option>
                 <option value="16">16:00</option>
@@ -76,82 +78,89 @@
                 <option value="22">22:00</option>
               </select>
             </div>
+          </div>
 
-            <div class="form-row">
+          <div class="form-row">
+            <div class="form-group">
+              <i class='bx bx-user'></i>
               <input type="text" placeholder="Full Name" required />
+            </div>
+            <div class="form-group">
+              <i class='bx bx-phone'></i>
               <input type="text" placeholder="Phone Number" required />
             </div>
+          </div>
 
-            <div class="form-row">
-              <input
-                type="number"
-                placeholder="How Many Persons?"
-                min="1"
-                required
-              />
-              <input type="submit" value="TAKE TICKETS" />
+          <div class="form-row">
+            <div class="form-group">
+              <i class='bx bx-group'></i>
+              <input type="number" placeholder="How Many Persons?" min="1" required />
             </div>
-          </form>
-        </div>
+          </div>
+
+          <input type="submit" value="TAKE TICKETS" />
+        </form>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Scripts -->
-    <script src="js/swiper-bundle.min.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-      function escapeHtml(text) {
-        const map = {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;",
-        };
+  <!-- Scripts -->
+  <script src="js/swiper-bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function escapeHtml(text) {
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      };
 
-        return String(text).replace(/[&<>"']/g, function (char) {
-          return map[char];
-        });
-      }
+      return String(text).replace(/[&<>"']/g, function (char) {
+        return map[char];
+      });
+    }
 
-      const dropdownMenu = document.querySelector(".dropdown-menu");
+    const dropdownMenu = document.querySelector(".dropdown-menu");
 
-      if (dropdownMenu) {
-        fetch("backend/auth_status.php", { cache: "no-store" })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.logged_in) {
-              const displayName = data.name || data.email || "Profile";
+    if (dropdownMenu) {
+      fetch("backend/auth_status.php", { cache: "no-store" })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.logged_in) {
+            const displayName = data.name || data.email || "Profile";
 
-              dropdownMenu.innerHTML = `
+            dropdownMenu.innerHTML = `
                 <li><a href="profile.php" class="login-btn">${escapeHtml(displayName)}</a></li>
                 <li><a href="logout.php" class="signup-btn">Logout</a></li>
               `;
-            } else {
-              dropdownMenu.innerHTML = `
+          } else {
+            dropdownMenu.innerHTML = `
                 <li><a href="login.php" class="login-btn">Login</a></li>
                 <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
               `;
-            }
-          })
-          .catch(() => {
-            dropdownMenu.innerHTML = `
+          }
+        })
+        .catch(() => {
+          dropdownMenu.innerHTML = `
               <li><a href="login.php" class="login-btn">Login</a></li>
               <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
             `;
-          });
+        });
 
+    }
+
+    // Close user menu when clicking outside
+    document.addEventListener("click", function (event) {
+      const userMenu = document.querySelector(".user-menu");
+      const userToggle = document.querySelector("#user-toggle");
+
+      if (userMenu && !userMenu.contains(event.target)) {
+        userToggle.checked = false;
       }
+    });
+  </script>
+</body>
 
-      // Close user menu when clicking outside
-      document.addEventListener("click", function (event) {
-        const userMenu = document.querySelector(".user-menu");
-        const userToggle = document.querySelector("#user-toggle");
-
-        if (userMenu && !userMenu.contains(event.target)) {
-          userToggle.checked = false;
-        }
-      });
-    </script>
-  </body>
 </html>
