@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <body>
     <header>
       <div class="nav container">
-        <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
+        <a href="main.php" class="logo">Rengoku<span>.tv</span></a>
         <!-- Navigation Links -->
       </div>
     </header>

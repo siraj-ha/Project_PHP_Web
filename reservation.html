@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.v2.css" />
   <link rel="stylesheet" href="css/swiper-bundle.min.css" />
 
   <!-- Box Icons -->
@@ -22,10 +22,13 @@
   <!-- Header -->
   <header>
     <div class="nav container">
-      <a href="Giyu.html" class="logo">Rengoku<span>.tv</span></a>
+      <a href="main.php" class="logo">Rengoku<span>.tv</span></a>
 
-      <!-- User Menu -->
       <ul class="nav-menu">
+        <li><a href="main.php#movies" class="nav-link">Movies</a></li>
+        <li><a href="main.php#trending" class="nav-link">Coming Soon</a></li>
+        <li><a href="reservation.html" class="nav-link active">Reservations</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
         <li class="user-menu">
           <input type="checkbox" id="user-toggle" title="User menu toggle" />
           <label for="user-toggle" class="user-icon">
@@ -43,63 +46,66 @@
   </header>
 
   <!-- Reservation Section -->
-  <section class="banner">
-    <h2>TAKE YOUR TICKETS NOW!</h2>
-    <div class="card-container">
-      <div class="card-img">
-      </div>
+  <section class="banner container">
+    <div class="reservation-content">
+      <h2>TAKE YOUR TICKETS NOW!</h2>
+      <div class="card-container">
+        <div class="card-img">
+          <!-- You can add a movie poster here dynamically if needed -->
+        </div>
 
-      <div class="card-content">
-        <h3>Book a Seat</h3>
-        <form>
-          <div class="form-row">
-            <div class="form-group">
-              <i class='bx bx-calendar'></i>
-              <select name="days" title="Select Day" required>
-                <option value="" disabled selected hidden>Select Day</option>
-                <option value="sunday">Sunday</option>
-                <option value="monday">Monday</option>
-                <option value="tuesday">Tuesday</option>
-                <option value="wednesday">Wednesday</option>
-                <option value="thursday">Thursday</option>
-                <option value="friday">Friday</option>
-                <option value="saturday">Saturday</option>
-              </select>
+        <div class="card-content">
+          <h3>Book a Seat</h3>
+          <form id="reservation-form">
+            <div class="form-row">
+              <div class="form-group">
+                <i class='bx bx-calendar'></i>
+                <select name="days" title="Select Day" required>
+                  <option value="" disabled selected hidden>Select Day</option>
+                  <option value="sunday">Sunday</option>
+                  <option value="monday">Monday</option>
+                  <option value="tuesday">Tuesday</option>
+                  <option value="wednesday">Wednesday</option>
+                  <option value="thursday">Thursday</option>
+                  <option value="friday">Friday</option>
+                  <option value="saturday">Saturday</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <i class='bx bx-time-five'></i>
+                <select name="hours" title="Select Hour" required>
+                  <option value="" disabled selected hidden>Select Hour</option>
+                  <option value="10">10:00</option>
+                  <option value="14">14:00</option>
+                  <option value="16">16:00</option>
+                  <option value="20">20:00</option>
+                  <option value="22">22:00</option>
+                </select>
+              </div>
             </div>
 
-            <div class="form-group">
-              <i class='bx bx-time-five'></i>
-              <select name="hours" title="Select Hour" required>
-                <option value="" disabled selected hidden>Select Hour</option>
-                <option value="10">10:00</option>
-                <option value="14">14:00</option>
-                <option value="16">16:00</option>
-                <option value="20">20:00</option>
-                <option value="22">22:00</option>
-              </select>
+            <div class="form-row">
+              <div class="form-group">
+                <i class='bx bx-user'></i>
+                <input type="text" placeholder="Full Name" required />
+              </div>
+              <div class="form-group">
+                <i class='bx bx-phone'></i>
+                <input type="text" placeholder="Phone Number" required />
+              </div>
             </div>
-          </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <i class='bx bx-user'></i>
-              <input type="text" placeholder="Full Name" required />
+            <div class="form-row">
+              <div class="form-group">
+                <i class='bx bx-group'></i>
+                <input type="number" placeholder="How Many Persons?" min="1" required />
+              </div>
             </div>
-            <div class="form-group">
-              <i class='bx bx-phone'></i>
-              <input type="text" placeholder="Phone Number" required />
-            </div>
-          </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <i class='bx bx-group'></i>
-              <input type="number" placeholder="How Many Persons?" min="1" required />
-            </div>
-          </div>
-
-          <input type="submit" value="TAKE TICKETS" />
-        </form>
+            <input type="submit" value="TAKE TICKETS" class="btn" />
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -133,6 +139,7 @@
 
             dropdownMenu.innerHTML = `
                 <li><a href="profile.php" class="login-btn">${escapeHtml(displayName)}</a></li>
+                ${Number(data.is_admin) === 1 ? '<li><a href="panel.php" class="login-btn">Control Panel</a></li>' : ''}
                 <li><a href="logout.php" class="signup-btn">Logout</a></li>
               `;
           } else {
@@ -148,7 +155,6 @@
               <li><a href="signup.php" class="signup-btn">Sign Up</a></li>
             `;
         });
-
     }
 
     // Close user menu when clicking outside
@@ -157,8 +163,14 @@
       const userToggle = document.querySelector("#user-toggle");
 
       if (userMenu && !userMenu.contains(event.target)) {
-        userToggle.checked = false;
+        if (userToggle) userToggle.checked = false;
       }
+    });
+
+    document.getElementById('reservation-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you! Your reservation request has been received.');
+      window.location.href = 'main.php';
     });
   </script>
 </body>

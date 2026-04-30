@@ -201,7 +201,6 @@ body {
   text-decoration: underline;
 }
 
-/* RESPONSIVE */
 @media (max-width: 600px) {
   .login-container,
   .signup-container {
@@ -267,7 +266,7 @@ header {
   color: var(--main-color);
 }
 
-/* USER MENU */
+
 .user-menu {
   position: relative;
 }
@@ -321,7 +320,7 @@ header {
   color: white;
 }
 
-/* MOBILE MENU TOGGLE */
+
 #menu-toggle {
   display: none;
 }

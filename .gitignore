@@ -1,1 +1,7 @@
+img/uploads/
+**/*.jpg
+**/*.jpeg
+**/*.png
+**/*.gif
+**/*.webp
 
