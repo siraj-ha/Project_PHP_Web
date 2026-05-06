@@ -118,6 +118,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						$trailerUrl = clean_text($_POST['trailer_url'] ?? '');
 						$genre = clean_text($_POST['genre'] ?? '');
 						$rating = to_rating($_POST['rating'] ?? '0');
+						
+						$screeningDate = clean_text($_POST['screening_date'] ?? '');
+						$screeningTime = clean_text($_POST['screening_time'] ?? '');
+						$totalSeats = (int) ($_POST['total_seats'] ?? 0);
+
 						$uploadError = '';
 						$uploadedImage = upload_movie_image($_FILES['image_file'] ?? null, $uploadError);
 
@@ -134,6 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						} elseif ($flashType !== 'error' && $imageUrl === '') {
 								$flashMessage = 'Movie image file is required.';
 								$flashType = 'error';
+						} elseif ($flashType !== 'error' && ($screeningDate === '' || $screeningTime === '' || $totalSeats <= 0)) {
+								$flashMessage = 'Initial screening date, time, and total seats are required.';
+								$flashType = 'error';
 						} elseif ($flashType !== 'error') {
 								$stmt = $conn->prepare('INSERT INTO movies (title, description, image_url, status, trailer_url, genre, rating) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
@@ -141,16 +149,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 										$stmt->bind_param('ssssssd', $title, $description, $imageUrl, $status, $trailerUrl, $genre, $rating);
 
 										if ($stmt->execute()) {
-												$flashMessage = 'Movie added successfully.';
-												$flashType = 'success';
+												$newMovieId = $stmt->insert_id;
+												$stmt->close();
+
+												$scrStmt = $conn->prepare('INSERT INTO screenings (movie_id, date, time, total_seats, available_seats) VALUES (?, ?, ?, ?, ?)');
+												if ($scrStmt) {
+														$scrStmt->bind_param('issii', $newMovieId, $screeningDate, $screeningTime, $totalSeats, $totalSeats);
+														if ($scrStmt->execute()) {
+																$flashMessage = 'Movie and initial screening added successfully.';
+																$flashType = 'success';
+														} else {
+																$flashMessage = 'Movie added, but could not add screening. Please try again.';
+																$flashType = 'error';
+														}
+														$scrStmt->close();
+												} else {
+														$flashMessage = 'Movie added, but could not prepare screening request.';
+														$flashType = 'error';
+												}
 										} else {
 												$flashMessage = 'Could not add movie. Please try again.';
+												$flashType = 'error';
+												$stmt->close();
+										}
+								} else {
+										$flashMessage = 'Could not prepare create movie request.';
+										$flashType = 'error';
+								}
+						}
+				}
+
+				if ($action === 'create_screening') {
+						$movieId = (int) ($_POST['movie_id'] ?? 0);
+						$date = clean_text($_POST['date'] ?? '');
+						$time = clean_text($_POST['time'] ?? '');
+						$totalSeats = (int) ($_POST['total_seats'] ?? 0);
+
+						if ($movieId <= 0 || $date === '' || $time === '' || $totalSeats <= 0) {
+								$flashMessage = 'All screening fields are required.';
+								$flashType = 'error';
+						} else {
+								$stmt = $conn->prepare('INSERT INTO screenings (movie_id, date, time, total_seats, available_seats) VALUES (?, ?, ?, ?, ?)');
+
+								if ($stmt) {
+										$stmt->bind_param('issii', $movieId, $date, $time, $totalSeats, $totalSeats);
+
+										if ($stmt->execute()) {
+												$flashMessage = 'Screening added successfully.';
+												$flashType = 'success';
+										} else {
+												$flashMessage = 'Could not add screening. Please try again.';
 												$flashType = 'error';
 										}
 
 										$stmt->close();
 								} else {
-										$flashMessage = 'Could not prepare create movie request.';
+										$flashMessage = 'Could not prepare create screening request.';
 										$flashType = 'error';
 								}
 						}
@@ -505,6 +559,25 @@ function h(string $value): string
 							<label for="description">Description</label>
 							<textarea id="description" name="description"><?php echo h($editMovie['description'] ?? ''); ?></textarea>
 						</div>
+
+						<?php if (!$editMovie): ?>
+						<div class="field" style="grid-column: 1 / -1;">
+							<hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+							<h3 style="font-size: 1.1rem; font-weight: 500; color: #fff;">Initial Screening Details</h3>
+						</div>
+						<div class="field">
+							<label for="screening_date">Date</label>
+							<input type="date" id="screening_date" name="screening_date" <?php echo $editMovie ? '' : 'required'; ?> />
+						</div>
+						<div class="field">
+							<label for="screening_time">Time</label>
+							<input type="time" id="screening_time" name="screening_time" <?php echo $editMovie ? '' : 'required'; ?> />
+						</div>
+						<div class="field">
+							<label for="total_seats">Total Seats</label>
+							<input type="number" id="total_seats" name="total_seats" min="1" <?php echo $editMovie ? '' : 'required'; ?> />
+						</div>
+						<?php endif; ?>
 					</div>
 
 					<div class="btn-row" style="margin-top: 12px;">
@@ -512,6 +585,55 @@ function h(string $value): string
 						<?php if ($editMovie): ?>
 						<a class="btn btn-secondary" href="panel.php#moviesSection">Cancel Edit</a>
 						<?php endif; ?>
+					</div>
+				</form>
+			</section>
+
+			<section class="section-card" id="screeningsSection">
+				<div class="section-header">
+					<h2>Add Screening</h2>
+				</div>
+
+				<form method="POST" action="panel.php#screeningsSection">
+					<input type="hidden" name="csrf_token" value="<?php echo h($_SESSION['csrf_token']); ?>" />
+					<input type="hidden" name="action" value="create_screening" />
+
+					<div class="movie-form-grid">
+						<div class="field">
+							<label for="screening_movie_id">Movie</label>
+							<select id="screening_movie_id" name="movie_id" required>
+								<option value="">Select movie</option>
+								<?php
+								$allMoviesResult = $conn->query('SELECT id, title FROM movies ORDER BY title ASC');
+								if ($allMoviesResult):
+									while ($m = $allMoviesResult->fetch_assoc()):
+								?>
+								<option value="<?php echo (int) $m['id']; ?>"><?php echo h($m['title']); ?></option>
+								<?php
+									endwhile;
+								endif;
+								?>
+							</select>
+						</div>
+
+						<div class="field">
+							<label for="scr_date">Date</label>
+							<input type="date" id="scr_date" name="date" required />
+						</div>
+
+						<div class="field">
+							<label for="scr_time">Time</label>
+							<input type="time" id="scr_time" name="time" required />
+						</div>
+
+						<div class="field">
+							<label for="scr_total_seats">Total Seats</label>
+							<input type="number" id="scr_total_seats" name="total_seats" min="1" required />
+						</div>
+					</div>
+
+					<div class="btn-row" style="margin-top: 12px;">
+						<button type="submit" class="btn btn-primary">Add Screening</button>
 					</div>
 				</form>
 			</section>

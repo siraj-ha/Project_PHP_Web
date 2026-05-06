@@ -51,6 +51,20 @@ if ($movieId > 0) {
 
 $trailerVideoId = $movie ? extract_youtube_video_id((string) ($movie['trailer_url'] ?? '')) : '';
 $embedUrl = $trailerVideoId !== '' ? 'https://www.youtube-nocookie.com/embed/' . $trailerVideoId . '?rel=0&modestbranding=1' : '';
+
+$screenings = [];
+if ($movie) {
+	$scrStmt = $conn->prepare('SELECT * FROM screenings WHERE movie_id = ? ORDER BY date ASC, time ASC');
+	if ($scrStmt) {
+		$scrStmt->bind_param('i', $movieId);
+		$scrStmt->execute();
+		$scrResult = $scrStmt->get_result();
+		if ($scrResult) {
+			$screenings = $scrResult->fetch_all(MYSQLI_ASSOC);
+		}
+		$scrStmt->close();
+	}
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -173,6 +187,83 @@ $embedUrl = $trailerVideoId !== '' ? 'https://www.youtube-nocookie.com/embed/' .
 			border: 1px solid rgba(255, 255, 255, 0.08);
 		}
 
+		.screenings-section {
+			margin-top: 28px;
+			padding-top: 24px;
+			border-top: 1px solid rgba(255, 255, 255, 0.08);
+			margin-bottom: 24px;
+		}
+
+		.screenings-section h2 {
+			font-size: 1.4rem;
+			margin-bottom: 16px;
+		}
+
+		.screenings-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			gap: 12px;
+		}
+
+		.screening-card {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			border-radius: 12px;
+			padding: 12px;
+			transition: all 0.3s ease;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.screening-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+			background: rgba(255, 255, 255, 0.08);
+		}
+
+		.screening-card.full {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
+		.scr-date {
+			font-size: 1rem;
+			font-weight: 600;
+			color: #fff;
+		}
+
+		.scr-time {
+			font-size: 1.2rem;
+			font-weight: 700;
+			color: #e50914;
+		}
+
+		.scr-seats {
+			font-size: 0.85rem;
+			color: #d6d6d6;
+			margin-top: 2px;
+		}
+
+		.scr-badge {
+			align-self: flex-start;
+			padding: 3px 8px;
+			border-radius: 999px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+
+		.scr-badge.available {
+			background: rgba(40, 167, 69, 0.15);
+			color: #4caf50;
+		}
+
+		.scr-badge.full {
+			background: rgba(220, 53, 69, 0.15);
+			color: #dc3545;
+		}
+
 		@media (max-width: 900px) {
 			.details-grid {
 				grid-template-columns: 1fr;
@@ -220,8 +311,34 @@ $embedUrl = $trailerVideoId !== '' ? 'https://www.youtube-nocookie.com/embed/' .
 						</div>
 						<p class="description"><?php echo nl2br(h($movie['description'] ?: 'No description available.')); ?>
 						</p>
+
+						<div class="screenings-section">
+							<h2>Available Screenings</h2>
+							<?php if (empty($screenings)): ?>
+								<p style="color: #d6d6d6;">No screenings available yet.</p>
+							<?php else: ?>
+								<div class="screenings-grid">
+									<?php foreach ($screenings as $scr): ?>
+										<?php 
+											$isFull = ((int)$scr['available_seats'] === 0);
+											$dateFormatted = date('M j, Y', strtotime($scr['date']));
+											$timeFormatted = date('H:i', strtotime($scr['time']));
+										?>
+										<div class="screening-card <?php echo $isFull ? 'full' : ''; ?>">
+											<div class="scr-badge <?php echo $isFull ? 'full' : 'available'; ?>">
+												<?php echo $isFull ? 'Full' : 'Available'; ?>
+											</div>
+											<div class="scr-date"><?php echo h($dateFormatted); ?></div>
+											<div class="scr-time"><?php echo h($timeFormatted); ?></div>
+											<div class="scr-seats">Seats: <?php echo (int)$scr['available_seats']; ?> / <?php echo (int)$scr['total_seats']; ?></div>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							<?php endif; ?>
+						</div>
+
 						<?php if (($movie['status'] ?? '') === 'available'): ?>
-							<div style="margin-top: 24px;">
+							<div>
 								<a href="reservation.html?movie_id=<?php echo $movie['id']; ?>" class="btn"
 									style="display: inline-block; padding: 12px 24px; background: #e50914; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">
 									<i class='bx bx-calendar-check' style="vertical-align: middle; margin-right: 8px;"></i>Book
