@@ -81,6 +81,29 @@ if ($conn->query($sql) === TRUE) {
     CHECK (available_seats >= 0 AND available_seats <= total_seats)
     )";
     $conn->query($screenings_table);
+
+    $reservations_table = "CREATE TABLE IF NOT EXISTS reservations (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) NOT NULL,
+    screening_id INT(11) NOT NULL,
+    seats_reserved INT(11) NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'confirmed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE (user_id, screening_id),
+    INDEX (user_id),
+    INDEX (screening_id),
+    
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    
+    FOREIGN KEY (screening_id) REFERENCES screenings(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+    )";
+    $conn->query($reservations_table);
     
     
  

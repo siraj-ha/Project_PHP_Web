@@ -324,26 +324,22 @@ if ($movie) {
 											$dateFormatted = date('M j, Y', strtotime($scr['date']));
 											$timeFormatted = date('H:i', strtotime($scr['time']));
 										?>
-										<div class="screening-card <?php echo $isFull ? 'full' : ''; ?>">
+										<button type="button" class="screening-card <?php echo $isFull ? 'full' : ''; ?>" onclick="selectScreening(<?php echo (int)$scr['id']; ?>, <?php echo $isFull ? 'true' : 'false'; ?>)" style="background: none; border: none; cursor: <?php echo $isFull ? 'not-allowed' : 'pointer'; ?>; padding: 0;">
 											<div class="scr-badge <?php echo $isFull ? 'full' : 'available'; ?>">
 												<?php echo $isFull ? 'Full' : 'Available'; ?>
 											</div>
 											<div class="scr-date"><?php echo h($dateFormatted); ?></div>
 											<div class="scr-time"><?php echo h($timeFormatted); ?></div>
 											<div class="scr-seats">Seats: <?php echo (int)$scr['available_seats']; ?> / <?php echo (int)$scr['total_seats']; ?></div>
-										</div>
+										</button>
 									<?php endforeach; ?>
 								</div>
 							<?php endif; ?>
 						</div>
 
 						<?php if (($movie['status'] ?? '') === 'available'): ?>
-							<div>
-								<a href="reservation.html?movie_id=<?php echo $movie['id']; ?>" class="btn"
-									style="display: inline-block; padding: 12px 24px; background: #e50914; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">
-									<i class='bx bx-calendar-check' style="vertical-align: middle; margin-right: 8px;"></i>Book
-									Now
-								</a>
+							<div style="margin-top: 20px;">
+								<p style="color: #d6d6d6; font-size: 0.9rem;">Click on a screening above to book your tickets.</p>
 							</div>
 						<?php endif; ?>
 					</div>
@@ -366,6 +362,30 @@ if ($movie) {
 			</section>
 		<?php endif; ?>
 	</main>
+
+	<script>
+		function selectScreening(screeningId, isFull) {
+			if (isFull) {
+				alert("This screening is full. Please select another one.");
+				return;
+			}
+
+			fetch("backend/auth_status.php", { cache: "no-store" })
+				.then((response) => response.json())
+				.then((data) => {
+					if (!data.logged_in) {
+						alert("Please login to make a reservation.");
+						window.location.href = "login.php";
+					} else {
+						window.location.href = "reservation.php?screening_id=" + screeningId;
+					}
+				})
+				.catch(() => {
+					alert("Please login to make a reservation.");
+					window.location.href = "login.php";
+				});
+		}
+	</script>
 </body>
 
 </html>
