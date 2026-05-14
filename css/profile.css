@@ -1,17 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-.profile-wrapper,
-.profile-card,
-.profile-header,
-.profile-body,
-.info-grid,
-.info-row,
-.edit-profile-panel,
-.edit-profile-form,
-.action-buttons {
-  box-sizing: border-box;
-}
-
 :root {
   --main-color: #fa5353;
   --main-hover: #e04545;
@@ -21,6 +9,9 @@
   --text-muted: #aaaaaa;
   --border-color: rgba(255, 255, 255, 0.08);
   --input-bg: rgba(27, 24, 43, 0.8);
+  --success-bg: #28a745;
+  --pending-bg: #ffc107;
+  --cancelled-bg: #6c757d;
 }
 
 * {
@@ -38,13 +29,7 @@ body {
   line-height: 1.6;
 }
 
-.container {
-  max-width: 1068px;
-  margin: auto;
-  width: 100%;
-}
-
-/* ===== Button Styles for Profile Page ===== */
+/* Button styles */
 .profile-wrapper .btn {
   display: inline-flex;
   align-items: center;
@@ -60,13 +45,6 @@ body {
   background: var(--light-color);
   color: var(--text-color);
   border: 2px solid rgba(255, 255, 255, 0.15);
-  clip-path: none;
-}
-
-.profile-wrapper .btn-secondary {
-  background: var(--light-color);
-  color: var(--text-color);
-  border: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 .profile-wrapper .btn-secondary:hover {
@@ -75,14 +53,9 @@ body {
   transform: translateY(-2px);
 }
 
-/* For any standalone btn without wrapper */
-.btn {
-  clip-path: none !important;
-}
-
-/* ===== Profile Wrapper ===== */
+/* Profile card */
 .profile-wrapper {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -91,15 +64,13 @@ body {
   border-radius: 1.25rem;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s;
 }
 
-/* ===== Header Section ===== */
+/* Header */
 .profile-header {
   background: linear-gradient(135deg, var(--main-color), #d43f3f);
   padding: 50px 30px 40px;
   text-align: center;
-  position: relative;
 }
 
 .avatar-large {
@@ -139,10 +110,9 @@ body {
   border-radius: 25px;
   font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.3px;
 }
 
-/* ===== Body Section ===== */
+/* Body */
 .profile-body {
   padding: 35px 30px;
 }
@@ -171,7 +141,6 @@ body {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  opacity: 0.9;
 }
 
 .info-value {
@@ -184,18 +153,10 @@ body {
 .mono-id {
   font-family: "Consolas", "Courier New", monospace;
   font-weight: 700;
-  letter-spacing: 0.5px;
   background: rgba(250, 83, 83, 0.15);
   padding: 3px 10px;
   border-radius: 6px;
   color: var(--main-color);
-}
-
-.text-muted {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-top: 6px;
-  font-style: italic;
 }
 
 .empty-field {
@@ -204,7 +165,7 @@ body {
   color: var(--text-muted);
 }
 
-/* ===== Alerts ===== */
+/* Alerts */
 .alert {
   padding: 14px 18px;
   border-radius: 10px;
@@ -231,13 +192,11 @@ body {
 .alert-success {
   background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 .alert-error {
   background: linear-gradient(135deg, #dc3545, #e74c3c);
   color: white;
-  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 .alert-icon {
@@ -246,7 +205,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ===== Edit Profile Panel ===== */
+/* Edit profile panel */
 .edit-profile-panel {
   margin-top: 30px;
   background: rgba(0, 0, 0, 0.2);
@@ -280,7 +239,6 @@ body {
   content: "✎ ";
   font-size: 1.1rem;
   margin-right: 10px;
-  transition: all 0.3s;
 }
 
 .edit-profile-panel[open] summary {
@@ -308,14 +266,11 @@ body {
 .edit-profile-form label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-color);
-  letter-spacing: 0.3px;
 }
 
 .edit-profile-form label .required {
   color: var(--main-color);
   margin-left: 3px;
-  font-weight: 700;
 }
 
 .edit-profile-form input {
@@ -331,19 +286,10 @@ body {
   transition: all 0.3s ease;
 }
 
-.edit-profile-form input:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
 .edit-profile-form input:focus {
   border-color: var(--main-color);
   box-shadow: 0 0 0 3px rgba(250, 83, 83, 0.15);
   background: rgba(27, 24, 43, 0.95);
-}
-
-.edit-profile-form input::placeholder {
-  color: rgba(255, 255, 255, 0.25);
-  font-style: italic;
 }
 
 .edit-profile-form .helper-text {
@@ -373,31 +319,129 @@ body {
   box-shadow: 0 8px 25px rgba(250, 83, 83, 0.3);
 }
 
-.edit-profile-form button:active {
-  transform: translateY(0) scale(0.98);
+/* Reservation history */
+.reservation-history {
+  margin-top: 30px;
 }
 
-.edit-profile-form button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
+.reservation-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
-/* ===== Action Buttons ===== */
+.reservation-history-header h3 {
+  font-size: 1.05rem;
+}
+
+.reservation-history-header span {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.reservation-empty {
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--text-muted);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.reservation-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.reservation-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.reservation-table th,
+.reservation-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.92rem;
+}
+
+.reservation-table th {
+  color: var(--main-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
+}
+
+.reservation-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-confirmed {
+  background: var(--success-bg);
+  color: white;
+}
+
+.status-pending {
+  background: var(--pending-bg);
+  color: #2c2c2c;
+}
+
+.status-cancelled {
+  background: var(--cancelled-bg);
+  color: white;
+}
+
+/* Cancel button */
+.cancel-btn {
+  background: transparent;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: var(--main-color);
+  color: white;
+}
+
+.cancelled-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Action buttons */
 .action-buttons {
   margin-top: 25px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-}
-
-/* Make home button full width on mobile */
-@media (max-width: 768px) {
-  .action-buttons .btn,
-  .action-buttons .btn-secondary {
-    width: 100%;
-    text-align: center;
-  }
 }
 
 hr {
@@ -408,16 +452,7 @@ hr {
   opacity: 0.5;
 }
 
-/* ===== Footer ===== */
-.footer-text {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #888;
-  margin-top: 25px;
-  padding: 10px;
-}
-
-/* ===== Responsive Design ===== */
+/* Responsive */
 @media (max-width: 768px) {
   body {
     padding: 20px 12px;
@@ -445,8 +480,13 @@ hr {
     font-size: 1.5rem;
   }
 
-  .info-row {
-    padding: 14px 16px;
+  .action-buttons .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .reservation-table {
+    min-width: 600px;
   }
 }
 
@@ -472,21 +512,8 @@ hr {
   }
 }
 
-/* ===== Print Styles ===== */
-@media print {
-  body {
-    background: white;
-    color: black;
-  }
-
-  .edit-profile-panel,
-  .action-buttons {
-    display: none;
-  }
-
-  .profile-card {
-    box-shadow: none;
-    border: 1px solid #ddd;
-  }
+/* Accessibility */
+:focus-visible {
+  outline: 2px solid var(--main-color);
+  outline-offset: 2px;
 }
- 

@@ -14,6 +14,7 @@ $screening_id = isset($_GET['screening_id']) ? (int)$_GET['screening_id'] : 0;
 $screening = null;
 $error_message = '';
 $success_message = '';
+$warning_message = '';
 
 // Fetch screening and movie details if screening_id provided
 if ($screening_id > 0) {
@@ -65,49 +66,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkResult = $checkStmt->get_result();
             
             if ($checkResult && $checkResult->num_rows === 1) {
-                $screeningCheck = $checkResult->fetch_assoc();
-                $available = (int)$screeningCheck['available_seats'];
-                
-                if ($seats_reserved > $available) {
-                    $error_message = 'Not enough seats available. Only ' . $available . ' seat(s) remaining.';
+              $screeningCheck = $checkResult->fetch_assoc();
+              $available = (int) $screeningCheck['available_seats'];
+
+              if ($seats_reserved > $available) {
+                $error_message = 'Not enough seats available. Only ' . $available . ' seat(s) remaining.';
+              } else {
+                $total_price = $seats_reserved * 12.00;
+                $status = 'confirmed';
+
+                $conn->begin_transaction();
+
+                $existingReservationStmt = $conn->prepare('SELECT seats_reserved FROM reservations WHERE user_id = ? AND screening_id = ? LIMIT 1');
+                if (!$existingReservationStmt) {
+                  $conn->rollback();
+                  $error_message = 'Could not prepare reservation check. Please try again.';
                 } else {
-                    // Calculate total price
-                    $total_price = $seats_reserved * 12.00;
-                    
-                    // Insert reservation
-                    $insertStmt = $conn->prepare('
+                  $existingReservationStmt->bind_param('ii', $user_id, $screening_id_post);
+                  $existingReservationStmt->execute();
+                  $existingReservationResult = $existingReservationStmt->get_result();
+                  $existingReservation = ($existingReservationResult && $existingReservationResult->num_rows === 1)
+                    ? $existingReservationResult->fetch_assoc()
+                    : null;
+                  $existingReservationStmt->close();
+                  $previousSeats = $existingReservation ? (int) $existingReservation['seats_reserved'] : 0;
+                  $seatDelta = $seats_reserved - $previousSeats;
+
+                  if ($seatDelta > 0 && $seatDelta > $available) {
+                    $conn->rollback();
+                    $error_message = 'Not enough seats available. Only ' . $available . ' seat(s) remaining.';
+                  } else {
+                    if ($existingReservation) {
+                      $saveStmt = $conn->prepare('
+                        UPDATE reservations
+                        SET seats_reserved = ?, total_price = ?, status = ?
+                        WHERE user_id = ? AND screening_id = ?
+                      ');
+                    } else {
+                      $saveStmt = $conn->prepare('
                         INSERT INTO reservations (user_id, screening_id, seats_reserved, total_price, status)
                         VALUES (?, ?, ?, ?, ?)
-                    ');
-                    
-                    if ($insertStmt) {
-                        $status = 'confirmed';
-                        $insertStmt->bind_param('iiiis', $user_id, $screening_id_post, $seats_reserved, $total_price, $status);
-                        
-                        if ($insertStmt->execute()) {
-                            // Update available seats in screening
-                            $updateStmt = $conn->prepare('
-                                UPDATE screenings 
-                                SET available_seats = available_seats - ? 
-                                WHERE id = ?
-                            ');
-                            
-                            if ($updateStmt) {
-                                $updateStmt->bind_param('ii', $seats_reserved, $screening_id_post);
-                                $updateStmt->execute();
-                                $updateStmt->close();
-                            }
-                            
-                            $success_message = 'Thank you! Your reservation has been confirmed. Total: $' . number_format($total_price, 2);
-                            
-                            // Optional: redirect after 2 seconds or show success then redirect
-                            header('Refresh: 2; url=main.php');
-                        } else {
-                            $error_message = 'Failed to create reservation. Please try again.';
-                        }
-                        $insertStmt->close();
+                      ');
                     }
+
+                    if (!$saveStmt) {
+                      $conn->rollback();
+                      $error_message = 'Could not prepare reservation save request.';
+                    } else {
+                      if ($existingReservation) {
+                        $saveStmt->bind_param('idsii', $seats_reserved, $total_price, $status, $user_id, $screening_id_post);
+                      } else {
+                        $saveStmt->bind_param('iiids', $user_id, $screening_id_post, $seats_reserved, $total_price, $status);
+                      }
+
+                      if ($saveStmt->execute()) {
+                        $updateStmt = $conn->prepare('
+                          UPDATE screenings
+                          SET available_seats = available_seats - ?
+                          WHERE id = ?
+                        ');
+
+                        if ($updateStmt) {
+                          $updateStmt->bind_param('ii', $seatDelta, $screening_id_post);
+
+                          if ($updateStmt->execute()) {
+                            $conn->commit();
+                            $success_message = $existingReservation
+                              ? 'Your reservation has been updated. Total: $' . number_format($total_price, 2)
+                              : 'Thank you! Your reservation has been confirmed. Total: $' . number_format($total_price, 2);
+                            header('Refresh: 2; url=main.php');
+                          } else {
+                            $conn->rollback();
+                            $error_message = 'Failed to update seat availability. Please try again.';
+                          }
+
+                          $updateStmt->close();
+                        } else {
+                          $conn->rollback();
+                          $error_message = 'Could not prepare seat availability update.';
+                        }
+                      } else {
+                        $conn->rollback();
+                        $error_message = 'Failed to save reservation. Please try again.';
+                      }
+
+                      $saveStmt->close();
+                    }
+                  }
                 }
+              }
             } else {
                 $error_message = 'Screening not found.';
             }
@@ -116,11 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Format screening data for display
+
 $screening_date = $screening ? date('M j, Y', strtotime($screening['date'])) : '';
 $screening_time = $screening ? date('H:i', strtotime($screening['time'])) : '';
 
-// Fetch user reservations
 $user_reservations = [];
 $reservationsStmt = $conn->prepare('
     SELECT r.id, r.seats_reserved, r.total_price, r.status, r.created_at,
@@ -571,6 +617,12 @@ if ($reservationsStmt) {
           <div style="background-color: #28a745; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
             <strong><?php echo htmlspecialchars($success_message, ENT_QUOTES, 'UTF-8'); ?></strong><br>
             <small>Redirecting to home page...</small>
+          </div>
+        <?php endif; ?>
+
+        <?php if ($warning_message !== ''): ?>
+          <div style="background-color: #ffc107; color: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <strong>Warning:</strong> <?php echo htmlspecialchars($warning_message, ENT_QUOTES, 'UTF-8'); ?>
           </div>
         <?php endif; ?>
 

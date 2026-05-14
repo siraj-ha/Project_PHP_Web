@@ -45,6 +45,20 @@ function to_rating(string $value): float
 		return round($rating, 1);
 }
 
+function is_future_screening(string $date, string $time): bool
+{
+		if ($date === '' || $time === '') {
+				return false;
+		}
+
+		$screeningTimestamp = strtotime($date . ' ' . $time);
+		if ($screeningTimestamp === false) {
+				return false;
+		}
+
+		return $screeningTimestamp > time();
+}
+
 function upload_movie_image(?array $file, string &$errorMessage)
 {
 		if (!$file || !isset($file['error'])) {
@@ -142,6 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						} elseif ($flashType !== 'error' && ($screeningDate === '' || $screeningTime === '' || $totalSeats <= 0)) {
 								$flashMessage = 'Initial screening date, time, and total seats are required.';
 								$flashType = 'error';
+						} elseif ($flashType !== 'error' && !is_future_screening($screeningDate, $screeningTime)) {
+								$flashMessage = 'Please pick a screening date and time in the future.';
+								$flashType = 'error';
 						} elseif ($flashType !== 'error') {
 								$stmt = $conn->prepare('INSERT INTO movies (title, description, image_url, status, trailer_url, genre, rating) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
@@ -187,6 +204,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 						if ($movieId <= 0 || $date === '' || $time === '' || $totalSeats <= 0) {
 								$flashMessage = 'All screening fields are required.';
+								$flashType = 'error';
+						} elseif (!is_future_screening($date, $time)) {
+								$flashMessage = 'Please pick a screening date and time in the future.';
 								$flashType = 'error';
 						} else {
 								$stmt = $conn->prepare('INSERT INTO screenings (movie_id, date, time, total_seats, available_seats) VALUES (?, ?, ?, ?, ?)');
