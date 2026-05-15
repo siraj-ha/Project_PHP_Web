@@ -131,10 +131,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                           if ($updateStmt->execute()) {
                             $conn->commit();
+                            // Store reservation ID for payment page
+                            $getReservationIdStmt = $conn->prepare('
+                              SELECT id FROM reservations 
+                              WHERE user_id = ? AND screening_id = ? 
+                              LIMIT 1
+                            ');
+                            if ($getReservationIdStmt) {
+                              $getReservationIdStmt->bind_param('ii', $user_id, $screening_id_post);
+                              $getReservationIdStmt->execute();
+                              $reservationIdResult = $getReservationIdStmt->get_result();
+                              if ($reservationIdResult && $reservationIdResult->num_rows === 1) {
+                                $reservationData = $reservationIdResult->fetch_assoc();
+                                $_SESSION['reservation_id'] = $reservationData['id'];
+                                $_SESSION['reservation_total'] = $total_price;
+                                $_SESSION['reservation_seats'] = $seats_reserved;
+                              }
+                              $getReservationIdStmt->close();
+                            }
                             $success_message = $existingReservation
                               ? 'Your reservation has been updated. Total: $' . number_format($total_price, 2)
                               : 'Thank you! Your reservation has been confirmed. Total: $' . number_format($total_price, 2);
-                            header('Refresh: 2; url=main.php');
+                            header('Refresh: 2; url=paiement.php');
                           } else {
                             $conn->rollback();
                             $error_message = 'Failed to update seat availability. Please try again.';
