@@ -660,7 +660,8 @@ if ($reservationsStmt) {
           <div class="card-content">
             <h3>Book a Seat</h3>
             <p style="color: #999; margin-bottom: 15px; font-size: 0.9rem;">Movie:
-              <strong><?php echo htmlspecialchars($screening['title'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
+              <strong><?php echo htmlspecialchars($screening['title'], ENT_QUOTES, 'UTF-8'); ?></strong>
+            </p>
 
             <form method="POST" action="reservation.php">
               <input type="hidden" name="screening_id" value="<?php echo (int) $screening_id; ?>" />
