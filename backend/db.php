@@ -81,8 +81,23 @@ if ($conn->query($sql) === TRUE) {
     )";
     $conn->query($reservations_table);
     
-    
- 
+$payments_table = "CREATE TABLE IF NOT EXISTS payments (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    reservation_id INT(11) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_status VARCHAR(50) DEFAULT 'paid',
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX (reservation_id),
+
+    FOREIGN KEY (reservation_id) REFERENCES reservations(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)";
+
+$conn->query($payments_table);
+
     $check_admin = "SELECT id FROM users WHERE email = 'admin@gmail.com'";
     $result = $conn->query($check_admin);
     
