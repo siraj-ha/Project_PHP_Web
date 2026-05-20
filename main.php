@@ -72,7 +72,7 @@ if ($coming_soon_result) {
       </ul>
     </div>
   </header>
-
+ 
   <section class="home container" id="home">
     <?php if ($random_movie): ?>
       <img src="<?php echo htmlspecialchars($random_movie['image_url']); ?>"
